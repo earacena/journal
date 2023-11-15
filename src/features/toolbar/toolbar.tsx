@@ -10,10 +10,11 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export function Toolbar(): JSX.Element {
   return (
-    <Menubar>
+    <Menubar className="h-12">
       <MenubarMenu>
         <MenubarTrigger>
           <Scroll />
@@ -47,7 +48,14 @@ export function Toolbar(): JSX.Element {
           </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
-      <Separator />
+      <Separator orientation="vertical" />
+      <MenubarMenu>
+        <MenubarTrigger asChild>
+          <Avatar className="p-1">
+            <AvatarFallback>AA</AvatarFallback>
+          </Avatar>
+        </MenubarTrigger>
+      </MenubarMenu>
     </Menubar>
   );
 }
