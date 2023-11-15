@@ -25,6 +25,7 @@ export function Toolbar({
   return (
     <Menubar className="h-12">
       <Toggle
+        className="data-[state=on]:bg-stone-700 data-[state=on]:text-stone-100"
         onClick={() => {
           setMarkdownPreviewEnabled(!markdownPreviewEnabled);
         }}
