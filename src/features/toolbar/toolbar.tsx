@@ -1,4 +1,4 @@
-import { Scroll, Settings, Type } from 'lucide-react';
+import { Eye, Scroll, Settings, Type } from 'lucide-react';
 import {
   Menubar,
   MenubarContent,
@@ -11,10 +11,26 @@ import {
 } from '@/components/ui/menubar';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Toggle } from '@/components/ui/toggle';
 
-export function Toolbar(): JSX.Element {
+interface ToolbarProps {
+  markdownPreviewEnabled: boolean;
+  setMarkdownPreviewEnabled: (value: React.SetStateAction<boolean>) => void;
+}
+
+export function Toolbar({
+  markdownPreviewEnabled,
+  setMarkdownPreviewEnabled,
+}: ToolbarProps): JSX.Element {
   return (
     <Menubar className="h-12">
+      <Toggle
+        onClick={() => {
+          setMarkdownPreviewEnabled(!markdownPreviewEnabled);
+        }}
+      >
+        <Eye />
+      </Toggle>
       <MenubarMenu>
         <MenubarTrigger>
           <Scroll />
@@ -55,6 +71,11 @@ export function Toolbar(): JSX.Element {
             <AvatarFallback>AA</AvatarFallback>
           </Avatar>
         </MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Entries</MenubarItem>
+          <MenubarItem>Calender</MenubarItem>
+          <MenubarItem>Preferences</MenubarItem>
+        </MenubarContent>
       </MenubarMenu>
     </Menubar>
   );
