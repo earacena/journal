@@ -9,6 +9,7 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from '@/components/ui/menubar';
+import { Separator } from '@/components/ui/separator';
 
 export function Toolbar(): JSX.Element {
   return (
@@ -46,6 +47,7 @@ export function Toolbar(): JSX.Element {
           </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
+      <Separator />
     </Menubar>
   );
 }
