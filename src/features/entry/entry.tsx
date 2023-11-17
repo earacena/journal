@@ -1,11 +1,29 @@
-import Markdown from 'react-markdown';
 import { useState } from 'react';
+import Markdown from 'react-markdown';
+import { useParams } from 'react-router-dom';
 import { Textarea } from '@/components/ui/textarea';
-import { Toolbar } from './features/toolbar';
+import { Toolbar } from '../toolbar';
 
-export function App(): JSX.Element {
-  const [timestamp, setTimestamp] = useState<Date>(new Date());
-  const [entryContent, setEntryContent] = useState<string>('');
+export interface EntryType {
+  id: string;
+  content: string;
+  timestamp: Date;
+}
+
+interface EntryProps {
+  entries: EntryType[];
+  setEntries: (value: React.SetStateAction<EntryType[]>) => void;
+}
+
+export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
+  const { entryId } = useParams();
+  const entry = entries.find((e) => e.id === entryId) ?? undefined;
+  const [timestamp, setTimestamp] = useState<Date>(
+    entry?.timestamp ?? new Date(),
+  );
+  const [entryContent, setEntryContent] = useState<string>(
+    entry?.content ?? '',
+  );
   const [markdownPreviewEnabled, setMarkdownPreviewEnabled] =
     useState<boolean>(false);
 
@@ -21,6 +39,14 @@ export function App(): JSX.Element {
           onChange={(event) => {
             setEntryContent(event.target.value);
             setTimestamp(new Date());
+
+            setEntries((prevEntries) =>
+              prevEntries.map((e) =>
+                e.id === entry?.id
+                  ? { ...e, content: entryContent, timestamp }
+                  : e,
+              ),
+            );
           }}
           value={entryContent}
         />
