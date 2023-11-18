@@ -1,4 +1,6 @@
+import type { SetStateAction } from 'react';
 import { Eye, Scroll, Settings, Type } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Menubar,
   MenubarContent,
@@ -12,13 +14,16 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Toggle } from '@/components/ui/toggle';
+import type { EntryType } from '../entry';
 
 interface ToolbarProps {
+  setEntries: (value: SetStateAction<EntryType[]>) => void;
   markdownPreviewEnabled: boolean;
   setMarkdownPreviewEnabled: (value: React.SetStateAction<boolean>) => void;
 }
 
 export function Toolbar({
+  setEntries,
   markdownPreviewEnabled,
   setMarkdownPreviewEnabled,
 }: ToolbarProps): JSX.Element {
@@ -37,8 +42,20 @@ export function Toolbar({
           <Scroll />
         </MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>
-            New Page <MenubarShortcut>Alt+T</MenubarShortcut>
+          <MenubarItem
+            onClick={() => {
+              setEntries((prevEntries) =>
+                prevEntries.concat({
+                  id: 'new',
+                  content: '# '.concat(new Date().toLocaleDateString()),
+                  timestamp: new Date(),
+                }),
+              );
+
+              // toast announcing new entry and button to go check it out
+            }}
+          >
+            New Entry <MenubarShortcut>Alt+T</MenubarShortcut>
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
@@ -73,7 +90,9 @@ export function Toolbar({
           </Avatar>
         </MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Entries</MenubarItem>
+          <Link to="/">
+            <MenubarItem>Entries</MenubarItem>
+          </Link>
           <MenubarItem>Calender</MenubarItem>
           <MenubarItem>Preferences</MenubarItem>
         </MenubarContent>
