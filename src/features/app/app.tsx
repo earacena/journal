@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import {
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import type { EntryType } from '@/features/entry';
-import { Entries, Entry } from '@/features/entry';
+import { EntryList, Entry } from '@/features/entry';
 
 export function App(): JSX.Element {
   const [entries, setEntries] = useState<EntryType[]>([
@@ -17,16 +12,13 @@ export function App(): JSX.Element {
     },
   ]);
 
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route element={<Entries entries={entries} />} path="/">
-        <Route
-          element={<Entry entries={entries} setEntries={setEntries} />}
-          path="entry/:id"
-        />
-      </Route>,
-    ),
+  return (
+    <Routes>
+      <Route element={<EntryList entries={entries} />} path="/" />
+      <Route
+        element={<Entry entries={entries} setEntries={setEntries} />}
+        path="entry/:id"
+      />
+    </Routes>
   );
-
-  return <RouterProvider router={router} />;
 }
