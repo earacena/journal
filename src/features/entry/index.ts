@@ -1,3 +1,3 @@
 export { Entry } from './entry';
-export { Entries } from './entries';
+export { EntryList } from './entry-list';
 export type { EntryType } from './entry';
