@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,8 +16,8 @@ interface EntryProps {
 }
 
 export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
-  const { entryId } = useParams();
-  const entry = entries.find((e) => e.id === entryId) ?? undefined;
+  const { id } = useParams();
+  const entry = entries.find((e) => e.id === id) ?? undefined;
   const [timestamp, setTimestamp] = useState<Date>(
     entry?.timestamp ?? new Date(),
   );
@@ -26,6 +26,24 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
   );
   const [markdownPreviewEnabled, setMarkdownPreviewEnabled] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const newTimestamp = new Date();
+      setEntries((prevEntries) =>
+        prevEntries.map((e) =>
+          e.id === entry?.id
+            ? { ...e, content: entryContent, newTimestamp }
+            : e,
+        ),
+      );
+      setTimestamp(newTimestamp);
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [entry?.id, entryContent, setEntries]);
 
   return (
     <div className="flex w-full h-full flex-col items-center p-4">
@@ -38,15 +56,6 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
           className="grow resize-none mb-2 w-96 h-full"
           onChange={(event) => {
             setEntryContent(event.target.value);
-            setTimestamp(new Date());
-
-            setEntries((prevEntries) =>
-              prevEntries.map((e) =>
-                e.id === entry?.id
-                  ? { ...e, content: entryContent, timestamp }
-                  : e,
-              ),
-            );
           }}
           value={entryContent}
         />
@@ -63,6 +72,7 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
       )}
       <Toolbar
         markdownPreviewEnabled={markdownPreviewEnabled}
+        setEntries={setEntries}
         setMarkdownPreviewEnabled={setMarkdownPreviewEnabled}
       />
     </div>
