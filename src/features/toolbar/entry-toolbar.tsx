@@ -22,8 +22,7 @@ interface ToolbarProps {
   setMarkdownPreviewEnabled: (value: React.SetStateAction<boolean>) => void;
 }
 
-export function Toolbar({
-  setEntries,
+export function EntryToolbar({
   markdownPreviewEnabled,
   setMarkdownPreviewEnabled,
 }: ToolbarProps): JSX.Element {
@@ -41,23 +40,6 @@ export function Toolbar({
         <MenubarTrigger>
           <Scroll />
         </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem
-            onClick={() => {
-              setEntries((prevEntries) =>
-                prevEntries.concat({
-                  id: 'new',
-                  content: '# '.concat(new Date().toLocaleDateString()),
-                  timestamp: new Date(),
-                }),
-              );
-
-              // toast announcing new entry and button to go check it out
-            }}
-          >
-            New Entry <MenubarShortcut>Alt+T</MenubarShortcut>
-          </MenubarItem>
-        </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>
