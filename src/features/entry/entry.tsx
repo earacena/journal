@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { Textarea } from '@/components/ui/textarea';
-import { Toolbar } from '../toolbar';
+import { EntryToolbar } from '../toolbar';
 
 export interface EntryType {
   id: string;
@@ -70,7 +70,7 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
           {timestamp.toLocaleTimeString()}
         </span>
       )}
-      <Toolbar
+      <EntryToolbar
         markdownPreviewEnabled={markdownPreviewEnabled}
         setEntries={setEntries}
         setMarkdownPreviewEnabled={setMarkdownPreviewEnabled}
