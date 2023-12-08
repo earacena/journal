@@ -42,6 +42,7 @@ module.exports = {
         typescript: {
           project,
         }
-      }
+      },
+      "import/no-extraneous-dependencies": ["error", { "optionalDependencies": false }]
     }
 }
