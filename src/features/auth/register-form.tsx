@@ -16,13 +16,27 @@ import {
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 
-const zRegisterFormSchema = z.object({
-  email: z
-    .string()
-    .email({ message: 'Must be valid email' })
-    .min(1, { message: 'Email is required' }),
-  password: z.string().min(1, { message: 'Password is required' }),
-});
+const zRegisterFormSchema = z
+  .object({
+    email: z
+      .string()
+      .email({ message: 'Must be valid email' })
+      .min(1, { message: 'Email is required' }),
+    password: z
+      .string()
+      .min(4, { message: 'Password must have 4 or more characters' })
+      .max(20, { message: 'Password must be less than 20 characters' })
+      .regex(new RegExp(/\d/), 'Password must contain 1 digit')
+      .regex(
+        new RegExp(/[!@#$%^&*-+=]/),
+        'Password must contain one of the following: !@#$%^&*-+=',
+      ),
+    confirmPassword: z.string().min(1, { message: 'Must confirm password' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 export function RegisterForm(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
@@ -76,7 +90,33 @@ export function RegisterForm(): JSX.Element {
                   <Input placeholder="Password" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
-                <FormDescription>The password for the account.</FormDescription>
+                <FormDescription>
+                  Passwords must:
+                  <ul className="list-disc ml-6">
+                    <li>be between 4 and 20 characters long</li>
+                    <li>contain at least 1 number</li>
+                    <li>contain at least 1 special symbol: !@#$%^&*-+=</li>
+                  </ul>
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem className="my-2">
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Confirm Password"
+                    type="password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+                <FormDescription>Re-type the desired password.</FormDescription>
               </FormItem>
             )}
           />
