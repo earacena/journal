@@ -1,4 +1,4 @@
-import { Mail, VenetianMask } from 'lucide-react';
+import { Mail, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function LoginMenu(): JSX.Element {
@@ -11,13 +11,13 @@ export function LoginMenu(): JSX.Element {
             className="flex flex-row p-3 border rounded-md items-center hover:cursor-pointer hover:bg-slate-200 mb-2"
             to="/signin/email"
           >
-            <Mail />
-            <span className="ml-2">Continue with Email</span>
+            <Mail className="mr-2" />
+            Continue with Email
           </Link>
         </li>
         <li className="flex flex-row p-3 border rounded-md items-center hover:cursor-pointer hover:bg-slate-200">
-          <VenetianMask />
-          <span className="ml-2">Continue as a guest</span>
+          <User className="mr-2" />
+          Continue as a guest
         </li>
       </ul>
     </div>
