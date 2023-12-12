@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import type { EntryType } from '@/features/entry';
 import { EntryList, Entry } from '@/features/entry';
 import { Toaster } from '@/components/ui/toaster';
-import { LoginMenu, EmailLoginForm, RegisterForm } from '../auth';
+import { LoginMenu, EmailLoginForm, EmailSignUpForm } from '../auth';
 
 export function App(): JSX.Element {
   const [entries, setEntries] = useState<EntryType[]>([
@@ -24,7 +24,7 @@ export function App(): JSX.Element {
         />
         <Route element={<LoginMenu />} path="/signin" />
         <Route element={<EmailLoginForm />} path="/signin/email" />
-        <Route element={<RegisterForm />} path="/signup" />
+        <Route element={<EmailSignUpForm />} path="/signup/email" />
       </Routes>
       <Toaster />
     </>

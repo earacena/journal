@@ -1,3 +1,3 @@
 export { LoginMenu } from './login-menu';
-export { RegisterForm } from './register-form';
+export { EmailSignUpForm } from './email-signup-form';
 export { EmailLoginForm } from './email-login-form';

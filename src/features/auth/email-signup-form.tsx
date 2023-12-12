@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from 'lucide-react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { logger } from '@/utils/logger';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,8 +16,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
+import { UserCredentialContext } from './user-credential-provider';
 
-const zRegisterFormSchema = z
+const zEmailSignUpFormSchema = z
   .object({
     email: z
       .string()
@@ -38,22 +40,35 @@ const zRegisterFormSchema = z
     path: ['confirmPassword'],
   });
 
-export function RegisterForm(): JSX.Element {
+export function EmailSignUpForm(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
+  const user = useContext(UserCredentialContext);
+  const auth = getAuth();
 
-  const form = useForm<z.infer<typeof zRegisterFormSchema>>({
-    resolver: zodResolver(zRegisterFormSchema),
+  const form = useForm<z.infer<typeof zEmailSignUpFormSchema>>({
+    resolver: zodResolver(zEmailSignUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof zRegisterFormSchema>): void {
+  async function onSubmit(
+    values: z.infer<typeof zEmailSignUpFormSchema>,
+  ): Promise<void> {
     setLoading(true);
 
-    // TODO: Process credentials using firebase, and log users in, redirect to main page
-    logger.log(JSON.stringify(values));
+    const { email, password } = values;
+    try {
+      const userCredentail = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      user?.setUserCredential(userCredentail);
+    } catch (err: unknown) {
+      logger.logError(err);
+    }
 
     setLoading(false);
   }
