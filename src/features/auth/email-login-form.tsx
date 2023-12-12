@@ -2,7 +2,9 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from 'lucide-react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { Link, redirect } from 'react-router-dom';
 import {
   Form,
   FormControl,
@@ -14,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { logger } from '@/utils/logger';
+import { UserCredentialContext } from './user-credential-provider';
 
 const zEmailLoginFormSchema = z.object({
   email: z
@@ -25,6 +28,8 @@ const zEmailLoginFormSchema = z.object({
 
 export function EmailLoginForm(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
+  const user = useContext(UserCredentialContext);
+  const auth = getAuth();
 
   const form = useForm<z.infer<typeof zEmailLoginFormSchema>>({
     resolver: zodResolver(zEmailLoginFormSchema),
@@ -34,11 +39,24 @@ export function EmailLoginForm(): JSX.Element {
     },
   });
 
-  function onSubmit(values: z.infer<typeof zEmailLoginFormSchema>): void {
+  async function onSubmit(
+    values: z.infer<typeof zEmailLoginFormSchema>,
+  ): Promise<void> {
     setLoading(true);
 
     // TODO: Process credentials using firebase, and log users in, redirect to main page
-    logger.log(JSON.stringify(values));
+    const { email, password } = values;
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      user?.setUserCredential(userCredential);
+      redirect('/');
+    } catch (err: unknown) {
+      logger.logError(err);
+    }
 
     setLoading(false);
   }
@@ -84,6 +102,14 @@ export function EmailLoginForm(): JSX.Element {
           </Button>
         </form>
       </Form>
+      <div className="flex flex-col w-80">
+        <p className="text-sm mx-2 text-stone-500 self-center my-4">
+          Don&apos;t have an account?
+        </p>
+        <Link className="flex flex-col w-80" to="/signup/email">
+          <Button variant="outline">Create an account</Button>
+        </Link>
+      </div>
     </div>
   );
 }
