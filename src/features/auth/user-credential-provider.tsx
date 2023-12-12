@@ -2,7 +2,7 @@ import type { UserCredential } from 'firebase/auth';
 import type { SetStateAction } from 'react';
 import { createContext, useState } from 'react';
 
-interface UserContextType {
+interface UserCredentialContextType {
   userCredential: UserCredential | null;
   setUserCredential: (value: SetStateAction<UserCredential | null>) => void;
 }
@@ -11,7 +11,8 @@ interface UserProviderProps {
   children: React.ReactNode;
 }
 
-export const UserContext = createContext<UserContextType | null>(null);
+export const UserCredentialContext =
+  createContext<UserCredentialContextType | null>(null);
 
 export function UserCredentialProvider({
   children,
@@ -21,8 +22,10 @@ export function UserCredentialProvider({
   );
 
   return (
-    <UserContext.Provider value={{ userCredential, setUserCredential }}>
+    <UserCredentialContext.Provider
+      value={{ userCredential, setUserCredential }}
+    >
       {children}
-    </UserContext.Provider>
+    </UserCredentialContext.Provider>
   );
 }
