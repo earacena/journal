@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { logger } from '@/utils/logger';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,7 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { UserCredentialContext } from './user-credential-provider';
+import { UserCredentialContext } from './user-provider';
 
 const zEmailSignUpFormSchema = z
   .object({
@@ -45,11 +46,14 @@ export function EmailSignUpForm(): JSX.Element {
   const user = useContext(UserCredentialContext);
   const auth = getAuth();
 
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof zEmailSignUpFormSchema>>({
     resolver: zodResolver(zEmailSignUpFormSchema),
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -60,12 +64,13 @@ export function EmailSignUpForm(): JSX.Element {
 
     const { email, password } = values;
     try {
-      const userCredentail = await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password,
       );
-      user?.setUserCredential(userCredentail);
+      user?.setAuthUser(userCredential.user);
+      navigate('/');
     } catch (err: unknown) {
       logger.logError(err);
     }
@@ -106,12 +111,10 @@ export function EmailSignUpForm(): JSX.Element {
                 </FormControl>
                 <FormMessage />
                 <FormDescription>
-                  Passwords must:
-                  <ul className="list-disc ml-6">
-                    <li>be between 4 and 20 characters long</li>
-                    <li>contain at least 1 number</li>
-                    <li>contain at least 1 special symbol: !@#$%^&*-+=</li>
-                  </ul>
+                  Passwords must contain: <br />
+                  &bull; between 4 and 20 characters <br />
+                  &bull; 1 number <br />
+                  &bull; 1 special symbol: !@#$%^&*-+= <br />
                 </FormDescription>
               </FormItem>
             )}

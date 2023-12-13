@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from 'lucide-react';
 import { useContext, useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Form,
   FormControl,
@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { logger } from '@/utils/logger';
-import { UserCredentialContext } from './user-credential-provider';
+import { UserCredentialContext } from './user-provider';
 
 const zEmailLoginFormSchema = z.object({
   email: z
@@ -30,6 +30,7 @@ export function EmailLoginForm(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const user = useContext(UserCredentialContext);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof zEmailLoginFormSchema>>({
     resolver: zodResolver(zEmailLoginFormSchema),
@@ -52,8 +53,8 @@ export function EmailLoginForm(): JSX.Element {
         email,
         password,
       );
-      user?.setUserCredential(userCredential);
-      redirect('/');
+      user?.setAuthUser(userCredential.user);
+      navigate('/');
     } catch (err: unknown) {
       logger.logError(err);
     }
