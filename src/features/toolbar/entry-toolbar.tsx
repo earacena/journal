@@ -1,6 +1,5 @@
 import type { SetStateAction } from 'react';
 import { Eye, Scroll, Settings, Type } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import {
   Menubar,
   MenubarContent,
@@ -12,9 +11,9 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Toggle } from '@/components/ui/toggle';
 import type { EntryType } from '../entry';
+import { UserMenu } from './user-menu';
 
 interface ToolbarProps {
   setEntries: (value: SetStateAction<EntryType[]>) => void;
@@ -65,20 +64,7 @@ export function EntryToolbar({
         </MenubarContent>
       </MenubarMenu>
       <Separator orientation="vertical" />
-      <MenubarMenu>
-        <MenubarTrigger asChild>
-          <Avatar className="p-1">
-            <AvatarFallback>AA</AvatarFallback>
-          </Avatar>
-        </MenubarTrigger>
-        <MenubarContent>
-          <Link to="/">
-            <MenubarItem>Entries</MenubarItem>
-          </Link>
-          <MenubarItem>Calender</MenubarItem>
-          <MenubarItem>Preferences</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+      <UserMenu />
     </Menubar>
   );
 }
