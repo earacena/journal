@@ -1,11 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import {
-  CalendarDays,
-  LogIn,
-  LogOut,
-  ScrollText,
-  Settings,
-} from 'lucide-react';
+import { LogIn, LogOut } from 'lucide-react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -46,22 +40,6 @@ export function UserMenu(): JSX.Element {
             </MenubarItem>
           </Link>
         )}
-        <Link to="/">
-          <MenubarItem>
-            <ScrollText className="mr-2" />
-            Entries
-          </MenubarItem>
-        </Link>
-        <MenubarItem>
-          <CalendarDays className="mr-2" />
-          Calender
-        </MenubarItem>
-        <Link to="/settings">
-          <MenubarItem>
-            <Settings className="mr-2" />
-            Settings
-          </MenubarItem>
-        </Link>
         {user?.authUser ? (
           <MenubarItem onClick={() => void handleSignOut()}>
             <LogOut className="mr-2" />

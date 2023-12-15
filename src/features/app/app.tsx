@@ -8,7 +8,7 @@ import { LoginMenu, EmailLoginForm, EmailSignUpForm } from '../auth';
 export function App(): JSX.Element {
   const [entries, setEntries] = useState<EntryType[]>([
     {
-      id: 'abcd1',
+      id: crypto.randomUUID(),
       content: '# Happy day\nThese are the things I got done:\n* Work\n* Sleep',
       timestamp: new Date(),
     },
@@ -17,7 +17,10 @@ export function App(): JSX.Element {
   return (
     <>
       <Routes>
-        <Route element={<EntryList entries={entries} />} path="/" />
+        <Route
+          element={<EntryList entries={entries} setEntries={setEntries} />}
+          path="/"
+        />
         <Route
           element={<Entry entries={entries} setEntries={setEntries} />}
           path="entry/:id"
