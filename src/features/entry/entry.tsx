@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 import { Textarea } from '@/components/ui/textarea';
-import { EntryToolbar } from '../toolbar';
 
 export interface EntryType {
   id: string;
@@ -11,11 +10,16 @@ export interface EntryType {
 }
 
 interface EntryProps {
+  markdownPreviewEnabled: boolean;
   entries: EntryType[];
   setEntries: (value: React.SetStateAction<EntryType[]>) => void;
 }
 
-export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
+export function Entry({
+  entries,
+  setEntries,
+  markdownPreviewEnabled,
+}: EntryProps): JSX.Element {
   const { id } = useParams();
   const entry = entries.find((e) => e.id === id) ?? undefined;
   const [timestamp, setTimestamp] = useState<Date>(
@@ -24,8 +28,6 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
   const [entryContent, setEntryContent] = useState<string>(
     entry?.content ?? '',
   );
-  const [markdownPreviewEnabled, setMarkdownPreviewEnabled] =
-    useState<boolean>(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -70,11 +72,6 @@ export function Entry({ entries, setEntries }: EntryProps): JSX.Element {
           {timestamp.toLocaleTimeString()}
         </span>
       )}
-      <EntryToolbar
-        markdownPreviewEnabled={markdownPreviewEnabled}
-        setEntries={setEntries}
-        setMarkdownPreviewEnabled={setMarkdownPreviewEnabled}
-      />
     </div>
   );
 }
