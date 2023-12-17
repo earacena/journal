@@ -1,17 +1,17 @@
 import type { SetStateAction } from 'react';
-import { Eye, Scroll, Settings, Type } from 'lucide-react';
+import { Eye, Home, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Menubar,
   MenubarContent,
-  MenubarItem,
   MenubarMenu,
   MenubarRadioGroup,
   MenubarRadioItem,
-  MenubarShortcut,
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import { Separator } from '@/components/ui/separator';
 import { Toggle } from '@/components/ui/toggle';
+import { Button } from '@/components/ui/button';
 import type { EntryType } from '../entry';
 import { UserMenu } from './user-menu';
 
@@ -35,24 +35,11 @@ export function EntryToolbar({
       >
         <Eye />
       </Toggle>
-      <MenubarMenu>
-        <MenubarTrigger>
-          <Scroll />
-        </MenubarTrigger>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>
-          <Type />
-        </MenubarTrigger>
-        <MenubarContent>
-          <MenubarItem>
-            Undo <MenubarShortcut>Alt+Z</MenubarShortcut>
-          </MenubarItem>
-          <MenubarItem>
-            Redo <MenubarShortcut>⇧+Alt+Z</MenubarShortcut>
-          </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
+      <Link to="/">
+        <Button variant="ghost">
+          <Home />
+        </Button>
+      </Link>
       <MenubarMenu>
         <MenubarTrigger>
           <Settings />
