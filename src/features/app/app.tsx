@@ -24,7 +24,7 @@ export function App(): JSX.Element {
     <div className="flex flex-col items-center h-full">
       <Routes>
         <Route
-          element={<EntryList entries={entries} setEntries={setEntries} />}
+          element={<EntryList entries={entries} onlyList={false} />}
           path="/"
         />
         <Route
@@ -40,7 +40,7 @@ export function App(): JSX.Element {
         <Route element={<LoginMenu />} path="/signin" />
         <Route element={<EmailLoginForm />} path="/signin/email" />
         <Route element={<EmailSignUpForm />} path="/signup/email" />
-        <Route element={<EntryCalendar />} path="/calendar" />
+        <Route element={<EntryCalendar entries={entries} />} path="/calendar" />
         <Route element={<Settings />} path="/settings" />
       </Routes>
       <Toolbar
