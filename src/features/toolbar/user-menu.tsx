@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/menubar';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { logger } from '@/utils/logger';
-import { UserCredentialContext } from '../auth/user-provider';
+import { UserCredentialContext } from '../auth';
 
 export function UserMenu(): JSX.Element {
   const auth = getAuth();

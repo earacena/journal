@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { logger } from '@/utils/logger';
-import { UserCredentialContext } from './user-provider';
+import { UserCredentialContext } from './user-credential-provider';
 
 const zEmailLoginFormSchema = z.object({
   email: z

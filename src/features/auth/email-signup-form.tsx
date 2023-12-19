@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { UserCredentialContext } from './user-provider';
+import { UserCredentialContext } from './user-credential-provider';
 
 const zEmailSignUpFormSchema = z
   .object({
